@@ -29,5 +29,5 @@ ln -s "$(pwd)/skills/task-handoff" ~/.codex/skills/task-handoff
 Append a compact task handoff entry to a Markdown file.
 
 ```bash
-python3 skills/task-handoff/scripts/update_handoff.py --title "My task" --path docs/handoff.md
+python3 skills/task-handoff/scripts/update_handoff.py --title "My task" --path memory/handoff/
 ```

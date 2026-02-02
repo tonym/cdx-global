@@ -1,4 +1,4 @@
 interface:
   display_name: "Task handoff"
   short_description: "Create/update a concise handoff summary"
-  default_prompt: "Use $task-handoff to write/update docs/handoff.md for this task."
+  default_prompt: "Use $task-handoff to write a one-file-per-task handoff under memory/handoff/ for this task."

@@ -65,7 +65,7 @@ def _render(template: str, values: dict[str, str]) -> str:
 def main() -> int:
     parser = argparse.ArgumentParser(description="Append a task handoff entry to a Markdown file.")
     parser.add_argument("--title", required=True, help="Human-readable task title.")
-    parser.add_argument("--path", default="docs/handoff.md", help="Handoff file path or directory.")
+    parser.add_argument("--path", default="memory/handoff/", help="Handoff file path or directory.")
     parser.add_argument("--goal", default="(fill in)", help="One-line goal.")
     parser.add_argument("--work-completed", default="(fill in)", help="High-level work completed.")
     parser.add_argument("--decisions", default="(fill in)", help="Key decisions or tradeoffs.")
@@ -73,16 +73,15 @@ def main() -> int:
     parser.add_argument("--open-questions", default="(none)", help="Open questions / unknowns.")
     args = parser.parse_args()
 
-    today = dt.date.today().isoformat()
+    now = dt.datetime.now()
+    today = now.date().isoformat()
+    timestamp = now.strftime("%Y-%m-%d-%H%M%S")
     skill_dir = Path(__file__).resolve().parents[1]
 
     target = Path(args.path)
-    if target.exists() and target.is_dir():
-        filename = f"{today}-{_slugify(args.title)}.md"
-        target = target / filename
-    elif not target.exists() and str(target).endswith(os.sep):
+    if target.suffix.lower() != ".md":
         target.mkdir(parents=True, exist_ok=True)
-        filename = f"{today}-{_slugify(args.title)}.md"
+        filename = f"{timestamp}-{_slugify(args.title)}.md"
         target = target / filename
     else:
         target.parent.mkdir(parents=True, exist_ok=True)

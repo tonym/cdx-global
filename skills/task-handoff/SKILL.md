@@ -7,8 +7,8 @@ description: Create or update a Markdown handoff summary file (goal, decisions, 
 
 ## Defaults
 
-- Default handoff path: `docs/handoff.md`
-- If the user prefers one-file-per-task: `docs/handoff/YYYY-MM-DD-<slug>.md`
+- Default handoff folder: `memory/handoff/`
+- Default file naming: `<timestamp>-<slug>.md` (timestamp format: `YYYY-MM-DD-HHMMSS`)
 
 ## Workflow
 
@@ -23,12 +23,12 @@ description: Create or update a Markdown handoff summary file (goal, decisions, 
 Prefer generating/updating the entry with:
 
 ```bash
-python3 skills/task-handoff/scripts/update_handoff.py --title "..." --path docs/handoff.md
+python3 skills/task-handoff/scripts/update_handoff.py --title "..." --path memory/handoff/
 ```
 
 Notes:
 
-- If `--path` points at a directory, the script creates `YYYY-MM-DD-<slug>.md` inside it.
+- If `--path` points at a directory, the script creates `<timestamp>-<slug>.md` inside it.
 - If git info can’t be detected, the script leaves placeholders for repo state and files changed.
 
 ## Output constraints
