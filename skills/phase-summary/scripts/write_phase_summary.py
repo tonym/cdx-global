@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import datetime as dt
 import glob
-import os
 import re
 import subprocess
 from pathlib import Path
@@ -69,21 +68,23 @@ def _format_handoff_files(paths: list[str], repo_root: Path | None) -> str:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Write a phase summary Markdown file (one file per phase).")
+    parser = argparse.ArgumentParser(description="Write a phase context summary Markdown file (one file per phase).")
     parser.add_argument("--title", required=True, help="Human-readable phase title/label.")
     parser.add_argument("--path", default="memory/summary/", help="Summary file path or directory.")
     parser.add_argument("--handoff-glob", default="memory/handoff/*.md", help="Glob for task handoff files to include.")
-    parser.add_argument("--phase-goal", default="(fill in)", help="Phase goal / objective.")
-    parser.add_argument("--deliverables", default="(fill in)", help="Key deliverables shipped.")
-    parser.add_argument("--highlights", default="(fill in)", help="Notable achievements.")
-    parser.add_argument("--decisions", default="(fill in)", help="Key decisions/tradeoffs.")
-    parser.add_argument("--architectural-impact", default="None", help="None | Minor | Significant.")
-    parser.add_argument("--next-phase", default="(fill in)", help="What happens next.")
-    parser.add_argument("--open-questions", default="(none)", help="Open questions / unknowns.")
+    parser.add_argument("--goal", default="(fill in)", help="What this phase was supposed to accomplish.")
+    parser.add_argument("--outcome", default="(fill in)", help="What is now true that was not true before.")
+    parser.add_argument("--invariants", default="* (fill in)", help="Bulleted list of invariants (rules/guarantees).")
+    parser.add_argument("--key-decisions", default="* (fill in)", help="Bulleted list of key decisions and rationale.")
+    parser.add_argument("--system-constraints", default="* (fill in)", help="Bulleted list of system constraints enforced.")
+    parser.add_argument("--failure-modes", default="* (fill in)", help="Bulleted list of explicit failure modes / errors.")
+    parser.add_argument("--out-of-scope", default="* (fill in)", help="Bulleted list of what is explicitly out of scope.")
+    parser.add_argument("--open-questions", default="* (none)", help="Bulleted list of open questions / inputs to next phase.")
+    parser.add_argument("--implementation-notes", default="* (optional)", help="Bulleted list of implementation notes.")
+    parser.add_argument("--end-state", default="(fill in)", help="1–2 sentences describing the new stable state.")
     args = parser.parse_args()
 
     now = dt.datetime.now()
-    date = now.date().isoformat()
     timestamp = now.strftime("%Y-%m-%d-%H%M%S")
 
     skill_dir = Path(__file__).resolve().parents[1]
@@ -109,26 +110,35 @@ def main() -> int:
     matched_handoffs = sorted(glob.glob(args.handoff_glob))
     handoff_files = _format_handoff_files(matched_handoffs, repo_root=repo_root)
 
+    if matched_handoffs:
+        handoff_hint = f"* Source handoffs: {handoff_files}"
+        invariants = f"{args.invariants}\n\n{handoff_hint}"
+        key_decisions = f"{args.key_decisions}\n\n{handoff_hint}"
+        system_constraints = f"{args.system_constraints}\n\n{handoff_hint}"
+        failure_modes = f"{args.failure_modes}\n\n{handoff_hint}"
+        open_questions = f"{args.open_questions}\n\n{handoff_hint}"
+    else:
+        invariants = args.invariants
+        key_decisions = args.key_decisions
+        system_constraints = args.system_constraints
+        failure_modes = args.failure_modes
+        open_questions = args.open_questions
+
     template = _load_template(skill_dir)
     entry = _render(
         template,
         {
-            "date": date,
             "title": args.title,
-            "phase_goal": args.phase_goal,
-            "scope_in": "(fill in)",
-            "scope_out": "(fill in)",
-            "deliverables": args.deliverables,
-            "highlights": args.highlights,
-            "decisions": args.decisions,
-            "architectural_impact": args.architectural_impact,
-            "risks_tradeoffs": "(fill in)",
-            "handoff_files": handoff_files,
-            "files_changed_high_level": "(fill in)",
-            "whats_done": "(fill in)",
-            "whats_not_done": "(fill in)",
-            "next_phase": args.next_phase,
-            "open_questions": args.open_questions,
+            "goal": args.goal,
+            "outcome": args.outcome,
+            "invariants": invariants,
+            "key_decisions": key_decisions,
+            "system_constraints": system_constraints,
+            "failure_modes": failure_modes,
+            "out_of_scope": args.out_of_scope,
+            "open_questions": open_questions,
+            "implementation_notes": args.implementation_notes,
+            "end_state": args.end_state,
             **git_values,
         },
     ).strip()
@@ -138,8 +148,7 @@ def main() -> int:
         prefix = "" if existing.endswith("\n") else "\n"
         to_write = existing + prefix + "\n---\n\n" + entry + "\n"
     else:
-        header = "# Phase summary\n\n"
-        to_write = header + entry + "\n"
+        to_write = entry + "\n"
 
     target.write_text(to_write, encoding="utf-8")
     print(f"Wrote phase summary to: {target}")

@@ -1,58 +1,41 @@
-## {{date}} — {{title}}
+# {{title}} — Context Summary
 
-**Phase goal**
-- {{phase_goal}}
+## Goal
 
-**Scope**
-- In: {{scope_in}}
-- Out: {{scope_out}}
+{{goal}}
 
-**Deliverables**
-- {{deliverables}}
+## Outcome
 
-**Highlights**
-- {{highlights}}
+{{outcome}}
 
-**Key decisions**
-- {{decisions}}
-- Architectural impact: None | Minor | Significant
+## Invariants (Must Remain True)
 
-**Risks / tradeoffs**
-- {{risks_tradeoffs}}
+{{invariants}}
 
-**Task handoffs included**
-- {{handoff_files}}
+## Key Decisions
 
-**Repo state**
-- Branch: {{branch}}
-- Commit: {{commit}}
+{{key_decisions}}
 
-**Files changed (high-level)**
-- {{files_changed_high_level}}
+## System Constraints
 
-**What’s done**
-- {{whats_done}}
+{{system_constraints}}
 
-**What’s not done**
-- {{whats_not_done}}
+## Failure Modes (Now Explicit)
 
-**Next phase**
-- {{next_phase}}
+{{failure_modes}}
 
-**Open questions**
-- {{open_questions}}
+## What Is Explicitly Out of Scope
 
-**Seed for next thread**
-```text
-Phase: {{title}}
-Goal: {{phase_goal}}
-Deliverables: {{deliverables}}
-Highlights: {{highlights}}
-Decisions: {{decisions}}
-Architectural impact: {{architectural_impact}}
-Risks: {{risks_tradeoffs}}
-Handoffs: {{handoff_files}}
-Repo state: {{branch}} @ {{commit}}
-Next: {{next_phase}}
-Open questions: {{open_questions}}
-```
+{{out_of_scope}}
+
+## Open Questions / Inputs to Next Phase
+
+{{open_questions}}
+
+## Implementation Notes (Optional)
+
+{{implementation_notes}}
+
+## End State
+
+{{end_state}}

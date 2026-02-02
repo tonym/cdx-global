@@ -1,4 +1,4 @@
 interface:
   display_name: "Phase summary"
   short_description: "Create/update a detailed phase/epic summary"
-  default_prompt: "Use $phase-summary to write a detailed phase summary under memory/summary/ based on the completed task handoffs."
+  default_prompt: "Use $phase-summary to write a detailed phase context summary under memory/summary/ based on the completed task handoffs."
