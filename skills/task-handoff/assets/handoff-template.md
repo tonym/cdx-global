@@ -9,6 +9,7 @@
 
 **Decisions**
 - {{decisions}}
+- Architectural impact: None | Minor | Significant
 
 **Work completed**
 - {{work_completed}}
