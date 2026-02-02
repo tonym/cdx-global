@@ -31,3 +31,11 @@ Append a compact task handoff entry to a Markdown file.
 ```bash
 python3 skills/task-handoff/scripts/update_handoff.py --title "My task" --path memory/handoff/
 ```
+
+### phase-summary
+
+Write a detailed phase/epic summary (optionally rolling up task handoffs).
+
+```bash
+python3 skills/phase-summary/scripts/write_phase_summary.py --title "Phase label" --path memory/summary/ --handoff-glob "memory/handoff/*.md"
+```
