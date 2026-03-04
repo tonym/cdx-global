@@ -9,6 +9,8 @@ description: Extract Prism UI Core Figma variables via Figma Console MCP (read-o
 
 Use this skill when you need agent-driven extraction of UI Core Figma variables through `figma_console` MCP (without relying on REST API scopes), while producing the same deterministic snapshot artifacts as `figma:extract`.
 
+This skill is MCP-only for extraction. Do not run `pnpm ... figma:extract` as part of this skill workflow.
+
 The outcome should match CLI behavior:
 
 - write `domains/ui-core/authoring/snapshots/figma/<snapshotId>.json`
@@ -35,6 +37,7 @@ The outcome should match CLI behavior:
   - `figma_get_variables`
   - `figma_get_status` (optional preflight)
 - Do not call write/mutate tools (`create`, `update`, `delete`, `set`, `instantiate`, etc.).
+- Do not invoke the UI Core extraction CLI (`figma:extract`) during skill execution.
 
 ## Workflow
 
@@ -52,6 +55,7 @@ The outcome should match CLI behavior:
    - snapshot id = `YYYYMMDDTHHmmssZ-<hash8>`
 6. Write deterministic artifacts using stable JSON writer:
    - `domains/ui-core/authoring/lib/file-io.js` (`writeStableJson`)
+   - write both `<snapshotId>.json` and `latest.json` directly from the agent flow
 7. Confirm output with:
    - collection name
    - variable count
@@ -61,9 +65,9 @@ The outcome should match CLI behavior:
 ## Implementation notes
 
 - Prefer reusing ui-core authoring libraries over re-implementing sorting/hashing.
-- Prefer reusing the repo extraction helpers directly where possible:
-  - `domains/ui-core/authoring/lib/figma-extract.js`
+- Reuse only non-CLI helpers for file writing and normalization:
   - `domains/ui-core/authoring/lib/snapshot-schema.js`
   - `domains/ui-core/authoring/lib/file-io.js`
+- Do not depend on `domains/ui-core/authoring/cli/figma-extract.mjs` or shell out to CLI scripts.
 - If `figma_get_variables` fails and status shows no active transport, surface a blocking message that bridge transport is not attached to this MCP instance.
 - Keep extraction idempotent: repeated unchanged runs should produce byte-stable JSON.
