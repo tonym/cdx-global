@@ -39,3 +39,7 @@ Write a detailed phase/epic summary (optionally rolling up task handoffs).
 ```bash
 python3 skills/phase-summary/scripts/write_phase_summary.py --title "Phase label" --path memory/summary/ --handoff-glob "memory/handoff/*.md"
 ```
+
+### figma-extract
+
+Extract Prism UI Core Figma variables via Figma Console MCP (read-only) and write deterministic snapshots aligned with the ui-core authoring contract.

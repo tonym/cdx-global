@@ -1,0 +1,4 @@
+interface:
+  display_name: "Figma extract"
+  short_description: "Extract Prism UI Core Figma variables to deterministic snapshots via MCP"
+  default_prompt: "Use $figma-extract to fetch variables from Figma Console MCP and write deterministic snapshot artifacts under domains/ui-core/authoring/snapshots/figma/."
