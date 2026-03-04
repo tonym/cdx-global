@@ -1,0 +1,15 @@
+{
+  "collectionName": "Prism UI Core Tokens",
+  "outputDir": "domains/ui-core/authoring/snapshots/figma",
+  "latestFile": "domains/ui-core/authoring/snapshots/figma/latest.json",
+  "source": {
+    "serverName": "figma_console",
+    "toolName": "figma_get_variables"
+  },
+  "mcp": {
+    "format": "full",
+    "verbosity": "standard",
+    "refreshCache": true,
+    "useConsoleFallback": false
+  }
+}
